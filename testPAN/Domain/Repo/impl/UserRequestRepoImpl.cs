@@ -14,7 +14,7 @@ namespace testPAN.Domain.Repo.impl
         }
         public async Task<List<UserRequest>> List(int page = 1, int pageSize = 100)
         {
-            return await _context.userRequests.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            return await _context.userRequests.Skip((page - 1) * pageSize).Take(pageSize).Include(x=>x.user).ToListAsync();
         }
 
         public async Task<UserRequest> Save(UserRequest request)

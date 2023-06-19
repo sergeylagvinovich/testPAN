@@ -18,5 +18,29 @@ namespace testPAN.Core
 
         public DbSet<Organization> organizations { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Organization>(builder =>
+            {
+                builder.Property(x => x.id).ValueGeneratedOnAdd();
+                builder.Property(x => x.pan).IsRequired();
+            });
+
+            modelBuilder.Entity<User>(builder =>
+            {
+                builder.Property(x => x.id).ValueGeneratedOnAdd();
+                builder.Property(x => x.email).IsRequired();
+                builder.HasMany(x => x.requests).WithOne(x => x.user).HasForeignKey(x => x.user_id);
+            });
+
+            modelBuilder.Entity<UserRequest>(builder =>
+            {
+                builder.Property(x => x.id).ValueGeneratedOnAdd();
+                builder.Property(x => x.pan).IsRequired();
+                builder.HasOne(x => x.user).WithMany(x => x.requests).HasForeignKey(x => x.user_id);
+            });
+
+        }
+
     }
 }

@@ -14,12 +14,14 @@ namespace testPAN.Controllers
         private IUserRequestService userRequestService;
         private IUserService userService;
 
-        public HomeController(IOrganizationChechService organizationChechService, IUserRequestService userRequestService)
+        public HomeController(IOrganizationChechService organizationChechService, IUserRequestService userRequestService, IUserService userService)
         {
             this.organizationChechService = organizationChechService;
             this.userRequestService = userRequestService;
+            this.userService = userService;
         }
 
+        [HttpPost("checkOrganization")]
         public async Task<UserRequestResponseApi> CheckOrganization(UserRequestApi userRequestApi)
         {
             User user = await userService.GetUserByEmail(userRequestApi.email);
@@ -31,6 +33,14 @@ namespace testPAN.Controllers
                 {
                     email = userRequestApi.email,
                 };
+            }
+            else
+            {
+                ur = user.requests.Where(x => x.pan == userRequestApi.pan).FirstOrDefault();
+            }
+
+            if(ur == null)
+            {
                 ur = new UserRequest()
                 {
                     user = user,
