@@ -50,7 +50,7 @@ namespace testPAN
 
             var trigger = TriggerBuilder.Create()
                 .WithIdentity("sendEmailTrigger", "email")
-                .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(11, 24))
+                .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(7, 0))
                 .Build();
 
             scheduler.ScheduleJob(jobDetail, trigger).GetAwaiter().GetResult();
